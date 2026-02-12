@@ -42,7 +42,7 @@ Image *readData(char *filename)
 	char file_type[5];
 	fscanf(fp, "%s", file_type);
 	//read the row and cols
-	fscanf(fp, "%d %d", &new_image->rows, &new_image->cols);
+	fscanf(fp, "%d %d", &new_image->cols, &new_image->rows);
 	// read the max value
 	int scale;
 	fscanf(fp, "%d", &scale);
@@ -55,7 +55,7 @@ Image *readData(char *filename)
 		free(new_image);
 		return NULL;
 	}
-	for (uint8_t i = 0; i < new_image->rows;i++){
+	for (uint32_t i = 0; i < new_image->rows;i++){
 		image[i] = (Color *)malloc(new_image->cols * sizeof(Color));
 		if (image[i] == NULL)
 		{
@@ -69,10 +69,10 @@ Image *readData(char *filename)
 			return NULL;
 		}
 	}
-	for (uint8_t i = 0; i < new_image->rows; i++){
-		for (uint8_t j = 0; j < new_image->cols; j++)
+	for (uint32_t i = 0; i < new_image->rows; i++){
+		for (uint32_t j = 0; j < new_image->cols; j++)
 		{
-			fscanf(fp, "%hhd %hhd %hhd", &image[i][j].R, &image[i][j].G, &image[i][j].B);
+			fscanf(fp, "%hhu %hhu %hhu", &image[i][j].R, &image[i][j].G, &image[i][j].B);
 		}
 	}
 	new_image->image = image;
@@ -87,11 +87,11 @@ void writeData(Image *image)
 {
 	//YOUR CODE HERE
 	printf("P3\n");
-	printf("%d %d\n",image->rows,image->cols);
+	printf("%d %d\n",image->cols,image->rows);
 	printf("255\n");
-	for (uint8_t i = 0; i < image->rows;i++){
-		for (uint8_t j = 0; j < image->cols; j++){
-			printf("%3d %3d %3d",image->image[i][j].R,image->image[i][j].G,image->image[i][j].B);
+	for (uint32_t i = 0; i < image->rows;i++){
+		for (uint32_t j = 0; j < image->cols; j++){
+			printf("%3hhu %3hhu %3hhu",image->image[i][j].R,image->image[i][j].G,image->image[i][j].B);
 			if (j != image->cols - 1){
 				printf("   ");
 			}
@@ -104,7 +104,7 @@ void writeData(Image *image)
 void freeImage(Image *image)
 {
 	//YOUR CODE HERE
-	for (uint8_t i = 0; i < image->rows;i++){
+	for (uint32_t i = 0; i < image->rows;i++){
 		free(image->image[i]);
 	}
 	free(image->image);
